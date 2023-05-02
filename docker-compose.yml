@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  webui:
+    image: ${DOCKER_REGISTRY-}webui
+    build:
+      context: .
+      dockerfile: src/WebUI/Dockerfile
+    environment:      
+      - "UseInMemoryDatabase=false"   
+      - "ConnectionStrings__DefaultConnection=Data Source=db; initial catalog=aspnet-myapp; user id=sa; password=Your_password123"
+    depends_on:
+      - db
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      - "MSSQL_SA_PASSWORD=Your_password123"
+      - "ACCEPT_EULA=Y"
+    ports:
+      - "5533:1433"
